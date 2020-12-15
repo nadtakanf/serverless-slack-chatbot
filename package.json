@@ -1,0 +1,21 @@
+{
+  "name": "serverless-slack-chatbot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "handler.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "serverless",
+    "slack",
+    "bot"
+  ],
+  "author": "Nadtakan Jones",
+  "license": "ISC",
+  "dependencies": {
+    "@slack/bolt": "^2.5.0",
+    "@slack/web-api": "^5.14.0",
+    "@slack/webhook": "^5.0.3"
+  }
+}

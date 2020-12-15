@@ -1,0 +1,33 @@
+service: serverless-slack-chatbot
+frameworkVersion: '2'
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  stage: ${opt:stage, "dev"}
+  region: ${opt:region, "us-west-2"}
+
+functions:
+  app:
+    handler: handler.app
+    events:
+    # bolt app
+      - http:
+          method: post
+          path: /slack/events
+    # OAuth flow
+      - http:
+          method: get
+          path: /slack/installation
+      - http:
+          method: get
+          path: /slack/oauth
+    environment:
+      SERVERLESS_STAGE: ${self:provider.stage}
+      SLACK_WEBHOOK_URL: https://hooks.slack.com/
+      SLACK_API_TOKEN: xoxp-abcd
+      SLACK_BOT_TOKEN: xoxb-abcd
+      SLACK_APP_CLIENT_ID: 123456789
+      SLACK_APP_CLIENT_SECRET: abcd
+      SLACK_SIGNING_SECRET: abcd
+      SLACK_APP_REDIRECT_URI: https://hooks.slack.com/
