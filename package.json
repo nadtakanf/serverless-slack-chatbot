@@ -16,6 +16,7 @@
   "dependencies": {
     "@slack/bolt": "^2.5.0",
     "@slack/web-api": "^5.14.0",
-    "@slack/webhook": "^5.0.3"
+    "@slack/webhook": "^5.0.3",
+    "serverless-http": "^2.6.0"
   }
 }
