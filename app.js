@@ -1,7 +1,7 @@
 'use strict'
 
-// Bot app
 // https://slack.com/bolt
+const { WebClient } = require('@slack/web-api')
 const { App, ExpressReceiver } = require('@slack/bolt')
 const expressReceiver = new ExpressReceiver({
     signingSecret: process.env.SLACK_SIGNING_SECRET,
@@ -17,7 +17,6 @@ module.exports.expressApp = expressReceiver.app;
 
 // If you need to use API methods that are not listed on https://api.slack.com/bot-users#methods
 // you need to use user api token instead like this:
-const { WebClient } = require('@slack/web-api')
 app.client = new WebClient(process.env.SLACK_API_TOKEN)
 
 // React to "app_mention" events
@@ -103,13 +102,6 @@ app.message('webhook', async({ message }) => {
 app.error(async(error) => {
     console.error(error)
 })
-
-// As long as you run this app as a Serverless Framework app, you don't need to have the following code 
-// (async () => {
-//   // Start your app
-//   await app.start(process.env.PORT || 3000);
-//   console.log('⚡️ Bolt app is running!');
-// })();
 
 // OAuth flow
 module.exports.expressApp.get('/slack/installation', (req, res) => {
