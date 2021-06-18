@@ -16,6 +16,7 @@
   "dependencies": {
     "@slack/bolt": "^2.5.0",
     "@slack/web-api": "^5.14.0",
+    "axios": "^0.21.1",
     "serverless-dotenv-plugin": "^3.9.0",
     "serverless-http": "^2.6.0"
   }

@@ -3,6 +3,8 @@
 // https://slack.com/bolt
 const { WebClient } = require('@slack/web-api')
 const { App, ExpressReceiver } = require('@slack/bolt')
+const axios = require("axios")
+
 const expressReceiver = new ExpressReceiver({
     signingSecret: process.env.SLACK_SIGNING_SECRET,
     processBeforeResponse: true
@@ -55,6 +57,36 @@ app.message('hello', async({ message, say }) => {
             }
         ]
     })
+})
+
+// React to message.channels event
+app.message('tell me a joke', async({ message, say }) => {
+    
+    const options = {
+        method: 'GET',
+        url: 'https://dad-jokes.p.rapidapi.com/random/joke',
+        headers: {
+          'x-rapidapi-key': process.env.DAD_JOKE_API_KEY,
+          'x-rapidapi-host': 'dad-jokes.p.rapidapi.com'
+        }
+    };
+
+    const joke = await axios(options)
+
+    // say() sends a message to the channel where the vent was triggered
+    const res = await say({
+        blocks: [
+            {
+              "type": "section",
+              "text": {
+                "type": "mrkdwn",
+                "text": `${joke.data.body[0].setup}`
+              }
+            }
+        ]
+    })
+
+    await say({text: `${joke.data.body[0].punchline}`, thread_ts: res.ts})
 })
 
 // Handle the click event (action_id: button_click) on a message posted by the above hello handler
@@ -117,7 +149,6 @@ module.exports.expressApp.get('/slack/oauth', (req, res) => {
         code: req.query.code,
         client_id: process.env.SLACK_CLIENT_ID,
         client_secret: process.env.SLACK_CLIENT_SECRET,
-        redirect_uri: process.env.SLACK_REDIRECT_URI
     }).then(apiRes => {
         if(apiRes.ok){
             console.log(`Succeeded! ${JSON.stringify(apiRes)}`)
