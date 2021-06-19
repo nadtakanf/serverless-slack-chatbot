@@ -72,6 +72,7 @@ app.message('tell me a joke', async({ message, say }) => {
     };
 
     const joke = await axios(options)
+    const { data } = joke;
 
     // say() sends a message to the channel where the vent was triggered
     const res = await say({
@@ -80,13 +81,13 @@ app.message('tell me a joke', async({ message, say }) => {
               "type": "section",
               "text": {
                 "type": "mrkdwn",
-                "text": `${joke.data.body[0].setup}`
+                "text": `${data.body[0].setup}`
               }
             }
         ]
     })
 
-    await say({text: `${joke.data.body[0].punchline}`, thread_ts: res.ts})
+    await say({text: `${data.body[0].punchline}`, thread_ts: res.ts})
 })
 
 // Handle the click event (action_id: button_click) on a message posted by the above hello handler
