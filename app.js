@@ -62,16 +62,17 @@ app.message('hello', async({ message, say }) => {
 // React to message.channels event
 app.message('tell me a joke', async({ message, say }) => {
     
-    const options = {
-        method: 'GET',
-        url: 'https://dad-jokes.p.rapidapi.com/random/joke',
-        headers: {
-          'x-rapidapi-key': process.env.DAD_JOKE_API_KEY,
-          'x-rapidapi-host': 'dad-jokes.p.rapidapi.com'
-        }
-    };
+    // const options = {
+    //     method: 'GET',
+    //     url: 'https://dad-jokes.p.rapidapi.com/random/joke',
+    //     headers: {
+    //       'x-rapidapi-key': process.env.DAD_JOKE_API_KEY,
+    //       'x-rapidapi-host': 'dad-jokes.p.rapidapi.com'
+    //     }
+    // };
 
-    const joke = await axios(options)
+    // const joke = await axios(options)
+    const joke = await axios( { method: 'GET', url: 'https://mn9ndfr6t6.execute-api.us-west-2.amazonaws.com/dev/joke', headers: {'x-api-key': process.env.JOKE_API} })
     const { data } = joke;
 
     // say() sends a message to the channel where the vent was triggered
@@ -81,13 +82,13 @@ app.message('tell me a joke', async({ message, say }) => {
               "type": "section",
               "text": {
                 "type": "mrkdwn",
-                "text": `${data.body[0].setup}`
+                "text": `${data[0].sentense1.S}`
               }
             }
         ]
     })
 
-    await say({text: `${data.body[0].punchline}`, thread_ts: res.ts})
+    await say({text: `${data[0].sentense2.S}`, thread_ts: res.ts})
 })
 
 // Handle the click event (action_id: button_click) on a message posted by the above hello handler
